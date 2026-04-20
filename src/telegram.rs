@@ -12,6 +12,8 @@ pub enum Command {
     Ping,
     #[command(description = "get system status and uptime.")]
     Status,
+    #[command(description = "change buddy personality mode. Usage: /mode <pin> <silent|normal|chatty>")]
+    Mode { pin: String, name: String },
 }
 
 pub struct TelegramBot {
@@ -74,6 +76,10 @@ impl TelegramBot {
                 );
                 
                 bot.send_message(msg.chat.id, status_msg).parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
+            }
+            Command::Mode { pin: _, name } => {
+                bot.send_message(msg.chat.id, format!("Buddy personality mode update requested: *{}*\n\n(Dynamic switching coming soon... Refresh daemon to apply toml change.)", name))
+                   .parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
             }
         };
         Ok(())
