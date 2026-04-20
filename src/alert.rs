@@ -42,7 +42,11 @@ impl AlertEngine {
                 ("dangerous_cmd".to_string(), format!("Dangerous command detected: {}", raw), Severity::Critical)
             }
             Event::BuildFailure { tool, log_tail, .. } => {
-                ("build_failure".to_string(), format!("Build failed ({}): {}", tool, log_tail), Severity::Critical)
+                let mut msg = format!("Build failed ({}): {}", tool, log_tail);
+                if let Some(suggestion) = self.oracle_diagnose(log_tail) {
+                    msg.push_str(&format!("\n\n🔮 Oracle Suggestion: {}", suggestion));
+                }
+                ("build_failure".to_string(), msg, Severity::Critical)
             }
             Event::Custom { watcher, message, severity } => {
                 (watcher.clone(), message.clone(), severity.clone())
@@ -62,6 +66,22 @@ impl AlertEngine {
 
         self.cooldowns.insert(key, now);
         Some((message, severity))
+    }
+
+    fn oracle_diagnose(&self, log: &str) -> Option<String> {
+        let rules = [
+            ("unresolved import", "Check your imports or Cargo.toml for missing dependencies."),
+            ("cannot find value", "Is the variable defined in this scope? Check for typos."),
+            ("expected", "Type mismatch detected. Use `.into()` or check function signatures."),
+            ("failed to resolve", "Run `cargo update` or check if the dependency is in Cargo.toml."),
+        ];
+
+        for (pattern, suggestion) in rules {
+            if log.contains(pattern) {
+                return Some(suggestion.to_string());
+            }
+        }
+        None
     }
 }
 
@@ -155,5 +175,20 @@ mod tests {
         assert!(msg.contains("Bodyguard Alert"));
         assert!(msg.contains("postgres"));
         assert_eq!(sev, Severity::Warning);
+    }
+
+    #[test]
+    fn test_oracle_suggestion() {
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let event = Event::BuildFailure {
+            tool: "cargo".to_string(),
+            exit_code: 101,
+            log_tail: "error[E0432]: unresolved import `abc`".to_string(),
+        };
+        let result = engine.process(&event);
+        assert!(result.is_some());
+        let (msg, _) = result.unwrap();
+        assert!(msg.contains("Oracle Suggestion"));
+        assert!(msg.contains("Check your imports"));
     }
 }
