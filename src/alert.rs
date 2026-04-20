@@ -2,6 +2,7 @@ use crate::event::{Event, Severity};
 use crate::config::Thresholds;
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
+use std::path::PathBuf;
 
 pub struct AlertEngine {
     thresholds: Thresholds,
@@ -83,5 +84,20 @@ mod tests {
         let event = Event::SysHealth { cpu_pct: 10.0, ram_pct: 10.0, disk_pct: 0.0 };
         let result = engine.process(&event);
         assert!(result.is_none());
+    }
+
+    #[test]
+    fn test_alert_on_dangerous_command() {
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let event = Event::DangerousCommand { 
+            raw: "rm -rf /".to_string(), 
+            cwd: PathBuf::from("/"), 
+            blocked: false 
+        };
+        let result = engine.process(&event);
+        assert!(result.is_some());
+        let (msg, sev) = result.unwrap();
+        assert!(msg.contains("Dangerous command detected"));
+        assert_eq!(sev, Severity::Critical);
     }
 }
