@@ -1,45 +1,39 @@
-# Roadmap - Milestone 4: The Keeper
+# Roadmap - Milestone 5: The Healer
 
-**3 phases** | **9 requirements mapped** | 100% Coverage
+**3 phases** | **3 requirements mapped** | 100% Coverage
 
 ## Timeline
 
 | Phase | Name | Goal | Requirements | Status |
 |-------|------|------|--------------|--------|
-| 10 | **Core Integration** | Logging and systemd signaling | SYS-01, SYS-02, SYS-03 | ⚡ In Queue |
-| 11 | **Memory & State** | Persistence for runtime config changes | PER-01, PER-02, PER-03, PER-04 | 💤 Pending |
-| 12 | **The Installer** | Standardized Linux deployment | SYS-04, SYS-05 | 💤 Pending |
+| 13 | **The Stimulus** | Implement basic auto-restart logic | HEAL-01 | ✅ Complete |
+| 14 | **Safe Hands** | Interactive Telegram confirmation | HEAL-02 | ✅ Complete |
+| 15 | **Post-Op** | Recovery verification and reporting | HEAL-03 | ✅ Complete |
 
 ---
 
 ## Phase Details
 
-### Phase 10: Core Integration
-**Goal:** Hook the daemon into the Linux service lifecycle.
+### Phase 13: The Stimulus
+**Goal:** Add a `heal` flag to critical processes and implement the logic to attempt restarts.
 - **Tasks:**
-    - Add `log`, `sd-notify`, and `systemd-journal-logger` to `Cargo.toml`.
-    - Initialize `JournalLog` in `main.rs`.
-    - Signal `NotifyState::Ready` after bot startup.
-    - Implement background watchdog heartbeat task.
+    - Update `Config` to include `auto_heal: bool` for critical processes.
+    - Implement `systemctl restart` call using `std::process::Command`.
 - **Success Criteria:**
-    - `journalctl -u autobuddy` shows correctly leveled logs.
-    - `systemctl status autobuddy` shows `active (running)` and `Ready` status.
+    - Killing `postgres` (monitored) results in an automatic system restart attempt.
 
-### Phase 11: Memory & State
-**Goal:** Allow the buddy to "remember" mode changes.
-- **Tasks:**
-    - Implement `serde` serialization for `Config`.
-    - Add `Config::save()` with atomic file writing using `tempfile`.
-    - Trigger `save()` when `/mode` command is received.
+### Phase 14: Safe Hands
+**Goal:** Prevent unintended restarts by adding a confirmation step.
+- **常规:**
+    - Add `HealChoice` event.
+    - Implement Telegram "Yes/No" callback buttons (if supported by context) or simple command reply.
 - **Success Criteria:**
-    - Changing mode to `silent` via Telegram persists after restarting the process.
-    - `autobuddy.toml` is updated automatically.
+    - Daemon pauses after crash and waits for user's command before restarting.
 
-### Phase 12: The Installer
-**Goal:** Easy deployment.
+### Phase 15: Post-Op
+**Goal:** Close the feedback loop.
 - **Tasks:**
-    - Create `autobuddy.service` template.
-    - Write `scripts/install.sh` to automate setup.
+    - Verify process is running after restart attempt.
+    - Notify user of success or failure.
 - **Success Criteria:**
-    - A clean install takes less than 30 seconds.
-    - Systemd unit correctly spawns the binary with the right config path.
+    - User receives "Postgres recovered successfully!" message.
