@@ -11,3 +11,9 @@ Allow basic machine commands via Telegram.
 - [ ] Implement command verification PIN/Auth
 - [ ] Add `/status` command to get real-time health
 - [ ] **UAT:** Sending `/cpu` to the bot returns current system usage.
+
+### Phase 8: The Tactician (Personality)
+Implement behavioral filters.
+- [ ] Add `buddy_mode` to config
+- [ ] Implement event filtering in `AlertEngine`
+- [ ] **UAT:** In `silent` mode, INFO alerts are not sent to Telegram.
