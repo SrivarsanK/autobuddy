@@ -31,8 +31,8 @@ Implement network/access monitoring.
 
 ### Phase 5: The Bodyguard (Process Monitoring)
 Protect critical components of the system.
-- [ ] Add `ProcessCrash` watcher for configured critical processes
-- [ ] **UAT:** Stopping a critical process (e.g. `postgres`) triggers a WARNING alert.
+- [x] Add `ProcessCrash` watcher for configured critical processes
+- [x] **UAT:** Stopping a critical process (e.g. `postgres`) triggers a WARNING alert.
 
 ### Phase 6: The Oracle (Smart Fixes)
 Enhanced healing.
