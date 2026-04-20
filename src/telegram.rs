@@ -2,6 +2,7 @@ use teloxide::prelude::*;
 use teloxide::utils::command::BotCommands;
 use crate::event::Severity;
 use sysinfo::System;
+use tokio::sync::mpsc;
 
 #[derive(BotCommands, Clone)]
 #[command(rename_rule = "lowercase", description = "These commands are supported:")]
@@ -14,8 +15,11 @@ pub enum Command {
     Status,
     #[command(description = "change buddy personality mode.", parse_with = "split")]
     Mode { pin: String, name: String },
+    #[command(description = "manually authorize a service restart.", parse_with = "split")]
+    Heal { pin: String, name: String },
 }
 
+#[derive(Clone)]
 pub struct TelegramBot {
     bot: Bot,
     chat_id: ChatId,
@@ -49,7 +53,13 @@ impl TelegramBot {
         Ok(())
     }
 
-    pub async fn handle_command(bot: Bot, msg: Message, cmd: Command) -> ResponseResult<()> {
+    pub async fn handle_command(
+        bot: Bot, 
+        msg: Message, 
+        cmd: Command, 
+        tx: &mpsc::Sender<crate::event::Event>,
+        master_pin: &str,
+    ) -> ResponseResult<()> {
         match cmd {
             Command::Help => {
                 bot.send_message(msg.chat.id, Command::descriptions().to_string()).await?;
@@ -77,9 +87,23 @@ impl TelegramBot {
                 
                 bot.send_message(msg.chat.id, status_msg).parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
             }
-            Command::Mode { pin: _, name } => {
-                bot.send_message(msg.chat.id, format!("Buddy personality mode update requested: *{}*\n\n(Dynamic switching coming soon... Refresh daemon to apply toml change.)", name))
-                   .parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
+            Command::Mode { pin, name } => {
+                if pin != master_pin {
+                    bot.send_message(msg.chat.id, "⛔ *Invalid Master PIN\\.*\nAccess denied\\.").parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
+                } else {
+                    let _ = tx.send(crate::event::Event::ModeChange { name: name.clone() }).await;
+                    bot.send_message(msg.chat.id, format!("Buddy personality mode update requested: *{}*\\.\\.\\.", name))
+                       .parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
+                }
+            }
+            Command::Heal { pin, name } => {
+                if pin != master_pin {
+                    bot.send_message(msg.chat.id, "⛔ *Invalid Master PIN\\.*\nHealing authority denied\\.").parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
+                } else {
+                    let _ = tx.send(crate::event::Event::HealRequest { name: name.clone() }).await;
+                    bot.send_message(msg.chat.id, format!("Buddy Intervention: Healing authorization received for *{}*\\.", name))
+                       .parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
+                }
             }
         };
         Ok(())
