@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        
+      - name: Build Binary
+        run: cargo build --release --locked
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autobuddy-binary
+          path: target/release/autobuddy
+
+  # Note: You can add an 'ssh-deploy' job here later once you have a server.
