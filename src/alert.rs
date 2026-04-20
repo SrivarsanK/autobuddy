@@ -124,7 +124,7 @@ mod tests {
     #[test]
     fn test_alert_on_high_cpu() {
         let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
-        let event = Event::SysHealth { cpu_pct: 15.0, ram_pct: 50.0, disk_pct: 0.0 };
+        let event = Event::SysHealth { cpu_pct: 95.0, ram_pct: 50.0, disk_pct: 0.0 };
         let result = engine.process(&event);
         assert!(result.is_some());
         assert!(result.unwrap().0.contains("CPU high"));
@@ -132,7 +132,7 @@ mod tests {
 
     #[test]
     fn test_no_alert_on_low_usage() {
-        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
         let event = Event::SysHealth { cpu_pct: 10.0, ram_pct: 10.0, disk_pct: 0.0 };
         let result = engine.process(&event);
         assert!(result.is_none());
@@ -140,7 +140,7 @@ mod tests {
 
     #[test]
     fn test_alert_on_dangerous_command() {
-        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
         let event = Event::DangerousCommand { 
             raw: "rm -rf /".to_string(), 
             cwd: PathBuf::from("/"), 
@@ -171,7 +171,7 @@ mod tests {
 
     #[test]
     fn test_alert_on_sentinel_event() {
-        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Chatty);
         let event = Event::Custom {
             watcher: "sentinel".to_string(),
             message: "Sentinel Alert: New connection from 1.2.3.4".to_string(),

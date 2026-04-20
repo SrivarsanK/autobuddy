@@ -12,7 +12,7 @@ pub enum Command {
     Ping,
     #[command(description = "get system status and uptime.")]
     Status,
-    #[command(description = "change buddy personality mode. Usage: /mode <pin> <silent|normal|chatty>")]
+    #[command(description = "change buddy personality mode.", parse_with = "split")]
     Mode { pin: String, name: String },
 }
 
