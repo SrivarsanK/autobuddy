@@ -47,6 +47,9 @@ impl AlertEngine {
             Event::Custom { watcher, message, severity } => {
                 (watcher.clone(), message.clone(), severity.clone())
             }
+            Event::ProcessCrash { name, .. } => {
+                ("process_crash".to_string(), format!("Bodyguard Alert: {} is missing from duty! Checking the perimeter.", name), Severity::Warning)
+            }
             _ => return None,
         };
 
@@ -136,5 +139,21 @@ mod tests {
         let (msg, sev) = result.unwrap();
         assert!(msg.contains("Sentinel Alert"));
         assert_eq!(sev, Severity::Info);
+    }
+
+    #[test]
+    fn test_alert_on_process_crash() {
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let event = Event::ProcessCrash {
+            name: "postgres".to_string(),
+            pid: 0,
+            exit_code: None,
+        };
+        let result = engine.process(&event);
+        assert!(result.is_some());
+        let (msg, sev) = result.unwrap();
+        assert!(msg.contains("Bodyguard Alert"));
+        assert!(msg.contains("postgres"));
+        assert_eq!(sev, Severity::Warning);
     }
 }

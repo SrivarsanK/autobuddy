@@ -14,6 +14,7 @@ process = true
 terminal = true
 build = true
 sentinel = true
+critical_processes = ["postgres", "nginx", "redis"]
 
 [rules]
 dangerous_commands = ["rm -rf", "dd if=", "mkfs", ":(){:|:&};:"]

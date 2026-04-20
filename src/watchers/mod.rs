@@ -2,6 +2,7 @@ pub mod syshealth;
 pub mod terminal;
 pub mod build;
 pub mod sentinel;
+pub mod process;
 
 use crate::event::Event;
 use async_trait::async_trait;

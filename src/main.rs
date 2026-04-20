@@ -11,6 +11,7 @@ use watchers::syshealth::SysHealthWatcher;
 use watchers::terminal::TerminalWatcher;
 use watchers::build::BuildWatcher;
 use watchers::sentinel::SentinelWatcher;
+use watchers::process::ProcessWatcher;
 use watchers::Watcher;
 use tokio::sync::mpsc;
 
@@ -65,6 +66,18 @@ async fn main() -> anyhow::Result<()> {
             let watcher = SentinelWatcher;
             if let Err(e) = watcher.run(tx_clone).await {
                 eprintln!("SentinelWatcher failed: {}", e);
+            }
+        });
+    }
+
+    // Spawn Process (Bodyguard) watcher
+    if config.watchers.process {
+        let tx_clone = tx.clone();
+        let critical_processes = config.watchers.critical_processes.clone();
+        tokio::spawn(async move {
+            let watcher = ProcessWatcher { critical_processes };
+            if let Err(e) = watcher.run(tx_clone).await {
+                eprintln!("ProcessWatcher failed: {}", e);
             }
         });
     }

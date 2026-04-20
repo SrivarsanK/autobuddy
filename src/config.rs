@@ -31,6 +31,7 @@ pub struct Watchers {
     pub terminal: bool,
     pub build: bool,
     pub sentinel: bool,
+    pub critical_processes: Vec<String>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
