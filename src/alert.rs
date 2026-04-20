@@ -41,6 +41,9 @@ impl AlertEngine {
             Event::DangerousCommand { raw, .. } => {
                 ("dangerous_cmd".to_string(), format!("Dangerous command detected: {}", raw), Severity::Critical)
             }
+            Event::BuildFailure { tool, log_tail, .. } => {
+                ("build_failure".to_string(), format!("Build failed ({}): {}", tool, log_tail), Severity::Critical)
+            }
             _ => return None,
         };
 
@@ -98,6 +101,22 @@ mod tests {
         assert!(result.is_some());
         let (msg, sev) = result.unwrap();
         assert!(msg.contains("Dangerous command detected"));
+        assert_eq!(sev, Severity::Critical);
+    }
+
+    #[test]
+    fn test_alert_on_build_failure() {
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let event = Event::BuildFailure { 
+            tool: "cargo".to_string(), 
+            exit_code: 1, 
+            log_tail: "error[E0425]: cannot find value `x`".to_string() 
+        };
+        let result = engine.process(&event);
+        assert!(result.is_some());
+        let (msg, sev) = result.unwrap();
+        assert!(msg.contains("Build failed (cargo)"));
+        assert!(msg.contains("cannot find value `x`"));
         assert_eq!(sev, Severity::Critical);
     }
 }
