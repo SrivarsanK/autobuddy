@@ -7,8 +7,8 @@ A "viral" system buddy that watches your back, alerting you to high resource usa
 
 ## Context
 - **Runtime:** Rust (tokio, teloxide, sysinfo)
-- **Status:** Phase 1 complete (Basic daemon, Telegram alerts, SysHealth watcher).
-- **Next Up:** Proper thresholding from config, full DangerousCommand interception, and BuildFailure detection.
+- **Status:** Milestone 1 complete. Core watchers (SysHealth, Terminal, Build) active.
+- **Next Up:** Milestone 2: Contextual Intelligence (Sentinels, Bodyguards, and Oracles).
 
 ## Requirements
 
@@ -18,10 +18,12 @@ A "viral" system buddy that watches your back, alerting you to high resource usa
 - ✓ CPU/RAM monitoring — existing
 
 ### Active
-- [ ] Connect thresholds in `AlertEngine` to `autobuddy.toml` config
-- [ ] Implement `DangerousCommand` detection in `TerminalWatcher`
-- [ ] Implement `BuildFailure` watcher for common build tools (cargo, npm)
-- [ ] Add `ProcessCrash` watcher
+- [x] Connect thresholds in `AlertEngine` to `autobuddy.toml` config
+- [x] Implement `DangerousCommand` detection in `TerminalWatcher`
+- [x] Implement `BuildFailure` watcher for common build tools (cargo, npm)
+- [ ] Implement SSH Watcher (The Sentinel)
+- [ ] Implement `ProcessCrash` watcher (The Bodyguard)
+- [ ] Implement Smart Diagnosis (The Oracle)
 
 ### Out of Scope
 - [ ] Remote dashboard — focusing on Telegram for now

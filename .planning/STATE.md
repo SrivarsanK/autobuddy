@@ -1,15 +1,13 @@
 # State
 
 ## Active Context
-- **Milestone 1:** Core Robustness & Viral Features
-- **Status:** Milestone 1 Complete.
-- **Current Phase:** None (Ready for Milestone 2)
+- **Milestone 2:** Contextual Intelligence
+- **Status:** Initialized.
+- **Current Phase:** None (Ready to start Phase 4).
 
 ## Decisions Logged
-- [x] Use configurable thresholds in AlertEngine.
-- [x] Implemented graceful shutdown with lifecycle logging.
-- [x] Implemented `TerminalWatcher` with trigger-file based interception for demo.
-- [x] Implemented `BuildWatcher` with log-tailing for build failure detection.
+- [x] SSH Watcher will notify only (Access Guard).
+- [x] Smart Diagnosis will use a local fix mapping for basic build errors.
 
 ## Pending Todos
-- [ ] Begin Milestone 2
+- [ ] Start Phase 4: The Sentinel

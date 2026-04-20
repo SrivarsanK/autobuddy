@@ -20,3 +20,21 @@ Watch the dev loop.
 - [x] Implement `BuildWatcher` (logfile tailing)
 - [x] Implement error parsing for Telegram alerts
 - [x] **UAT:** Build error (simulated via log) sends a Telegram notification.
+
+## Milestone 2: Contextual Intelligence
+Move beyond threshold monitoring into proactive "buddy" behaviors.
+
+### Phase 4: The Sentinel (SSH & Network)
+Implement network/access monitoring.
+- [ ] Implement SSH connection watcher
+- [ ] **UAT:** New SSH login triggers an immediate Informational alert.
+
+### Phase 5: The Bodyguard (Process Monitoring)
+Protect critical components of the system.
+- [ ] Add `ProcessCrash` watcher for configured critical processes
+- [ ] **UAT:** Stopping a critical process (e.g. `postgres`) triggers a WARNING alert.
+
+### Phase 6: The Oracle (Smart Fixes)
+Enhanced healing.
+- [ ] Implement "Fix Suggestions" based on build errors
+- [ ] **UAT:** Build failure alert includes a "Try this:..." repair suggestion.
