@@ -10,3 +10,7 @@ build.log
 
 # Planning (optional to keep, but often kept in agentic projects)
 #!.planning/
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md

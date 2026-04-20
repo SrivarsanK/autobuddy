@@ -1,8 +1,9 @@
+buddy_mode = "normal"
+
 [telegram]
 bot_token = "8640010611:AAEqCxZ3C9bHMQXMCz5MIuFeXqqtLrW1hew"
 chat_id = 1251627893
 master_pin = "buddy123"
-buddy_mode = "normal"
 
 [thresholds]
 cpu_pct = 85.0
@@ -16,7 +17,7 @@ process = true
 terminal = true
 build = true
 sentinel = true
-critical_processes = ["postgres", "nginx", "redis"]
+critical_processes = []
 
 [rules]
 dangerous_commands = ["rm -rf", "dd if=", "mkfs", ":(){:|:&};:"]

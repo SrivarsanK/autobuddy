@@ -1,9 +1,9 @@
-use crate::event::{Event, Severity};
 use crate::watchers::Watcher;
 use async_trait::async_trait;
 use tokio::sync::mpsc;
 use sysinfo::System;
 use std::time::Duration;
+use crate::event::Event;
 
 pub struct ProcessWatcher {
     pub critical_processes: Vec<String>,

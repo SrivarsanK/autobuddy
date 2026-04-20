@@ -1,14 +1,18 @@
 # State
 
-## Active Context
-- **Milestone 3:** Remote Governance
-- **Status:** Milestone 3 Complete.
-- **Current Phase:** None (Ready for Milestone 4).
+## Current Position
 
-## Decisions Logged
-- [x] PIN verification structure added to configuration.
-- [x] Status command prioritizes Uptime and RAM usage.
-- [x] Implemented `PartialOrd` for `Severity` to allow numerical comparison logic (`severity >= threshold`).
+Phase: Not started (defining requirements)
+Plan: —
+Status: Initializing Milestone 4
+Last activity: 2026-04-20 — Milestone v4.0 The Keeper started
+
+## Accumulated Context
+- **BuddyMode logic:** Uses PartialOrd for threshold filtering.
+- **Telegram Auth:** PIN check logic is ready in the command handler.
+- **Watchers:** 5 active watchers (SysHealth, Terminal, Sentinel, Build, Process).
 
 ## Pending Todos
-- [ ] Plan Milestone 4 (The Keeper)
+- [ ] Research systemd-rust integrations
+- [ ] Define precise REQ-IDs for Milestone 4
+- [ ] Create Milestone 4 Roadmap

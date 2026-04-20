@@ -1,0 +1,23 @@
+[package]
+name = "autobuddy"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+teloxide = { version = "0.13", features = ["macros"] }
+sysinfo = "0.30"
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+clap = { version = "4.0", features = ["derive"] }
+anyhow = "1.0"
+async-trait = "0.1"
+notify = "6.1"
+futures = "0.3"
+simple_logger = "5.0"
+tempfile = "3.8"
+log = "0.4"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+systemd-journal-logger = "0.4"
+sd-notify = "0.4"
