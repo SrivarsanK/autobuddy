@@ -9,6 +9,7 @@ use alert::AlertEngine;
 use telegram::TelegramBot;
 use watchers::syshealth::SysHealthWatcher;
 use watchers::terminal::TerminalWatcher;
+use watchers::build::BuildWatcher;
 use watchers::Watcher;
 use tokio::sync::mpsc;
 
@@ -41,6 +42,17 @@ async fn main() -> anyhow::Result<()> {
             let watcher = TerminalWatcher { rules };
             if let Err(e) = watcher.run(tx_clone).await {
                 eprintln!("TerminalWatcher failed: {}", e);
+            }
+        });
+    }
+
+    // Spawn Build watcher
+    if config.watchers.build {
+        let tx_clone = tx.clone();
+        tokio::spawn(async move {
+            let watcher = BuildWatcher;
+            if let Err(e) = watcher.run(tx_clone).await {
+                eprintln!("BuildWatcher failed: {}", e);
             }
         });
     }
