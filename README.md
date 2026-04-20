@@ -1,5 +1,4 @@
-# 🤖 autobuddy
-
+# 🤖 AUTOBUDDY
 ![autobuddy Hero](assets/readme/hero.png)
 
 > **The Autonomous System Guardian.**  
