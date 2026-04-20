@@ -6,32 +6,39 @@ A Rust-based system monitoring daemon that alerts via Telegram.
 A "viral" system buddy that watches your back, alerting you to high resource usage, dangerous shell commands, and build failures.
 
 ## Context
-- **Runtime:** Rust (tokio, teloxide, sysinfo)
-- **Status:** Milestone 1 complete. Core watchers (SysHealth, Terminal, Build) active.
-- **Next Up:** Milestone 2: Contextual Intelligence (Sentinels, Bodyguards, and Oracles).
+- **Current Version:** v2.0
+- **Status:** Milestone 2 complete. Proactive guarding (SSH, Process, Oracle) active.
+- **Next Up:** Milestone 3: Remote Governance (PIN-protected commands via Telegram).
 
-## Requirements
+<details>
+<summary>Archived Milestone 1 & 2 Context</summary>
+
+- **Milestone 1:** Core Robustness & Viral Features complete.
+- **Milestone 2:** Contextual Intelligence complete.
+- **Key Decisons:**
+    - Telegram for Alerts (High friction, mobile notifications).
+    - Rust/Tokio (Performance and concurrency).
+    - Sentinel logic via log-tailing.
+    - Bodyguard logic via sysinfo.
+</details>
+
+## Requirements (v3.0)
 
 ### Validated
-- ✓ Basic daemon structure — existing
-- ✓ Telegram alert delivery — existing
-- ✓ CPU/RAM monitoring — existing
+- ✓ System Health Monitoring
+- ✓ Terminal Command Guarding
+- ✓ Build Failure Healing
+- ✓ Access & Process Guarding
 
-### Active
-- [x] Connect thresholds in `AlertEngine` to `autobuddy.toml` config
-- [x] Implement `DangerousCommand` detection in `TerminalWatcher`
-- [x] Implement `BuildFailure` watcher for common build tools (cargo, npm)
-- [ ] Implement SSH Watcher (The Sentinel)
-- [ ] Implement `ProcessCrash` watcher (The Bodyguard)
-- [ ] Implement Smart Diagnosis (The Oracle)
+### Upcoming
+- [ ] Command verification PIN structure
+- [ ] Remote system status fetching
+- [ ] Buddy "Personality" modes (Silent, Chatty, Nervous)
 
-### Out of Scope
-- [ ] Remote dashboard — focusing on Telegram for now
-- [ ] Multi-user support — single local buddy for the user
-
-## Key Decisions
+## Current Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Telegram for Alerts | Low friction, mobile notifications out of the box | ✓ Implemented |
-| Rust/Tokio | High performance, safe concurrency for multiple watchers | ✓ Implemented |
+| Telegram for Alerts | Low friction, mobile notifications | ✓ Shipped |
+| Custom Event Refactor | Faster integration of new watchers | ✓ Shipped |
+| Smart Suggestions | User "wow" factor + utility | ✓ Shipped |

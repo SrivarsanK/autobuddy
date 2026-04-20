@@ -1,40 +1,13 @@
 # Roadmap: autobuddy
 
-## Milestone 1: Core Robustness & Viral Features
-The goal is to polish the existing features and add the "viral" intercepts that make autobuddy a true companion.
+- [v1.0 Milestone: Core Robustness & Viral Features](.planning/milestones/v1.0-ROADMAP.md) - Polished core engine and added "viral" intercepts.
+- [v2.0 Milestone: Contextual Intelligence](.planning/milestones/v2.0-ROADMAP.md) - Active system guarding and smart build failure diagnosis.
 
-### Phase 1: Robust Thresholds & Rules
-Connect the engine to the config so users can actually customize their buddy.
-- [x] Fix `AlertEngine` to use `Config` thresholds
-- [x] Log daemon startup/shutdown events
-- [x] **UAT:** High CPU (simulated) triggers Telegram alert based on `autobuddy.toml` value.
+## Milestone 3: Remote Governance (Planned)
+The goal is to move from "Alert only" to "Interact" via Telegram.
 
-### Phase 2: The Interceptor (Dangerous Commands)
-Wait for shell events and alert on danger.
-- [x] Implement `TerminalWatcher` logic
-- [x] Add substring matching for `dangerous_commands`
-- [x] **UAT:** Running a command on the "naughty list" triggers a CRITICAL alert.
-
-### Phase 3: Build & Crash Watchers
-Watch the dev loop.
-- [x] Implement `BuildWatcher` (logfile tailing)
-- [x] Implement error parsing for Telegram alerts
-- [x] **UAT:** Build error (simulated via log) sends a Telegram notification.
-
-## Milestone 2: Contextual Intelligence
-Move beyond threshold monitoring into proactive "buddy" behaviors.
-
-### Phase 4: The Sentinel (SSH & Network)
-Implement network/access monitoring.
-- [x] Implement SSH connection watcher
-- [x] **UAT:** New SSH login triggers an immediate Informational alert.
-
-### Phase 5: The Bodyguard (Process Monitoring)
-Protect critical components of the system.
-- [x] Add `ProcessCrash` watcher for configured critical processes
-- [x] **UAT:** Stopping a critical process (e.g. `postgres`) triggers a WARNING alert.
-
-### Phase 6: The Oracle (Smart Fixes)
-Enhanced healing.
-- [x] Implement "Fix Suggestions" based on build errors
-- [x] **UAT:** Build failure alert includes a "Try this:..." repair suggestion.
+### Phase 7: The Controller (Remote Commands)
+Allow basic machine commands via Telegram.
+- [ ] Implement command verification PIN/Auth
+- [ ] Add `/status` command to get real-time health
+- [ ] **UAT:** Sending `/cpu` to the bot returns current system usage.
