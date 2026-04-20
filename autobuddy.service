@@ -1,0 +1,17 @@
+[Unit]
+Description=autobuddy system monitoring daemon
+After=network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/autobuddy
+WorkingDirectory=/etc/autobuddy
+Restart=on-failure
+WatchdogSec=10
+
+# Security Hardening (Optional but recommended)
+# PrivateTmp=yes
+# NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target
