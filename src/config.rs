@@ -19,11 +19,13 @@ pub enum BuddyMode {
     Chatty,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, Default)]
 #[allow(dead_code)]
 pub struct TelegramConfig {
+    #[serde(default)]
     pub bot_token: String,
     pub chat_id: i64,
+    #[serde(default)]
     pub master_pin: String,
 }
 
@@ -57,7 +59,16 @@ pub struct Rules {
 impl Config {
     pub fn load<P: AsRef<Path>>(path: P) -> anyhow::Result<Self> {
         let content = fs::read_to_string(path)?;
-        let config: Config = toml::from_str(&content)?;
+        let mut config: Config = toml::from_str(&content)?;
+        
+        // Load secrets from environment variables if present
+        if let Ok(token) = std::env::var("TELEGRAM_BOT_TOKEN") {
+            config.telegram.bot_token = token;
+        }
+        if let Ok(pin) = std::env::var("MASTER_PIN") {
+            config.telegram.master_pin = pin;
+        }
+
         Ok(config)
     }
 

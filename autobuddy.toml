@@ -1,9 +1,7 @@
 buddy_mode = "normal"
 
 [telegram]
-bot_token = "8640010611:AAEqCxZ3C9bHMQXMCz5MIuFeXqqtLrW1hew"
 chat_id = 1251627893
-master_pin = "buddy123"
 
 [thresholds]
 cpu_pct = 85.0

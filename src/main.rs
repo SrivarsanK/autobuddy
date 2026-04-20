@@ -23,6 +23,8 @@ async fn main() -> anyhow::Result<()> {
     #[cfg(not(target_os = "linux"))]
     simple_logger::init_with_level(log::Level::Info).ok();
 
+    dotenvy::dotenv().ok();
+
     let mut current_config = Config::load("autobuddy.toml")?;
     let config_path = "autobuddy.toml";
     
