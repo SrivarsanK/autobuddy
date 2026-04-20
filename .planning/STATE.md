@@ -2,12 +2,12 @@
 
 ## Active Context
 - **Milestone 2:** Contextual Intelligence
-- **Status:** Initialized.
-- **Current Phase:** None (Ready to start Phase 4).
+- **Status:** Phase 4 Complete.
+- **Current Phase:** None (Ready for Phase 5: The Bodyguard).
 
 ## Decisions Logged
-- [x] SSH Watcher will notify only (Access Guard).
-- [x] Smart Diagnosis will use a local fix mapping for basic build errors.
+- [x] SSH Watcher implemented as a log-tailing sentinel.
+- [x] AlertEngine handles Custom events for watcher-specific messaging.
 
 ## Pending Todos
-- [ ] Start Phase 4: The Sentinel
+- [ ] Start Phase 5: The Bodyguard

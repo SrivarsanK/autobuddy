@@ -26,8 +26,8 @@ Move beyond threshold monitoring into proactive "buddy" behaviors.
 
 ### Phase 4: The Sentinel (SSH & Network)
 Implement network/access monitoring.
-- [ ] Implement SSH connection watcher
-- [ ] **UAT:** New SSH login triggers an immediate Informational alert.
+- [x] Implement SSH connection watcher
+- [x] **UAT:** New SSH login triggers an immediate Informational alert.
 
 ### Phase 5: The Bodyguard (Process Monitoring)
 Protect critical components of the system.
