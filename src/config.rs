@@ -14,6 +14,7 @@ pub struct Config {
 pub struct TelegramConfig {
     pub bot_token: String,
     pub chat_id: i64,
+    pub master_pin: String,
 }
 
 #[derive(Debug, Deserialize, Clone)]
