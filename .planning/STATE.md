@@ -2,12 +2,13 @@
 
 ## Active Context
 - **Milestone 2:** Contextual Intelligence
-- **Status:** Phase 5 Complete.
-- **Current Phase:** None (Ready for Phase 6: The Oracle).
+- **Status:** Milestone 2 Complete.
+- **Current Phase:** Finalizing.
 
 ## Decisions Logged
-- [x] ProcessWatcher implemented with 5-second polling via `sysinfo`.
-- [x] Critical process list defined in configuration.
+- [x] SSH Watcher (Sentinel) implementation.
+- [x] Process Watcher (Bodyguard) implementation.
+- [x] Smart Diagnosis (Oracle) implementation.
 
 ## Pending Todos
-- [ ] Start Phase 6: The Oracle
+- [ ] Complete Milestone 2 and archive.
