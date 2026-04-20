@@ -67,12 +67,10 @@ impl TelegramBot {
                 let status_msg = format!(
                     "📊 *System Status*\n\n\
                     ⏱ *Uptime:* {}d {}h {}m\n\
-                    🧠 *RAM:* {}/{} MB\n\
-                    🔥 *Load:* {:.1}%",
+                    🧠 *RAM:* {}/{} MB",
                     days, hours, minutes,
                     sys.used_memory() / 1024 / 1024,
-                    sys.total_memory() / 1024 / 1024,
-                    sys.load_average().one
+                    sys.total_memory() / 1024 / 1024
                 );
                 
                 bot.send_message(msg.chat.id, status_msg).parse_mode(teloxide::types::ParseMode::MarkdownV2).await?;
