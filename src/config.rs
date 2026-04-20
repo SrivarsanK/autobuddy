@@ -5,9 +5,18 @@ use std::path::Path;
 #[derive(Debug, Deserialize, Clone)]
 pub struct Config {
     pub telegram: TelegramConfig,
+    pub buddy_mode: BuddyMode,
     pub thresholds: Thresholds,
     pub watchers: Watchers,
     pub rules: Rules,
+}
+
+#[derive(Debug, Deserialize, Clone, Copy, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum BuddyMode {
+    Silent,
+    Normal,
+    Chatty,
 }
 
 #[derive(Debug, Deserialize, Clone)]
