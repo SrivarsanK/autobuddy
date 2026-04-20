@@ -21,7 +21,7 @@ async fn main() -> anyhow::Result<()> {
     let config = Config::load("autobuddy.toml")?;
     
     let (tx, mut rx) = mpsc::channel(100);
-    let mut alert_engine = AlertEngine::new(config.thresholds.clone());
+    let mut alert_engine = AlertEngine::new(config.thresholds.clone(), config.buddy_mode);
     let bot = TelegramBot::new(&config.telegram.bot_token, config.telegram.chat_id);
 
     println!("autobuddy daemon starting...");

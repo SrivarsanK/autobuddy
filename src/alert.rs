@@ -1,20 +1,22 @@
 use crate::event::{Event, Severity};
-use crate::config::Thresholds;
+use crate::config::{Thresholds, BuddyMode};
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
 use std::path::PathBuf;
 
 pub struct AlertEngine {
     thresholds: Thresholds,
+    mode: BuddyMode,
     cooldowns: HashMap<String, Instant>,
     cooldown_duration: Duration,
 }
 
 impl AlertEngine {
-    pub fn new(thresholds: Thresholds) -> Self {
+    pub fn new(thresholds: Thresholds, mode: BuddyMode) -> Self {
         let cooldown_duration = Duration::from_secs(thresholds.alert_cooldown_secs);
         Self {
             thresholds,
+            mode,
             cooldowns: HashMap::new(),
             cooldown_duration,
         }
@@ -57,6 +59,13 @@ impl AlertEngine {
             _ => return None,
         };
 
+        // Filter based on BuddyMode
+        match self.mode {
+            BuddyMode::Silent => if severity < Severity::Critical { return None; },
+            BuddyMode::Normal => if severity < Severity::Warning { return None; },
+            BuddyMode::Chatty => {},
+        }
+
         let now = Instant::now();
         if let Some(last) = self.cooldowns.get(&key) {
             if now.duration_since(*last) < self.cooldown_duration {
@@ -93,14 +102,28 @@ mod tests {
         Thresholds {
             cpu_pct: cpu,
             ram_pct: ram,
-            disk_pct: 90.0,
-            alert_cooldown_secs: 0, // No cooldown for tests
+            disk_pct: 80.0,
+            alert_cooldown_secs: 300,
         }
     }
 
     #[test]
+    fn test_personality_silent_mode() {
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Silent);
+        let event = Event::SysHealth { cpu_pct: 95.0, ram_pct: 50.0, disk_pct: 10.0 }; // Warning
+        assert!(engine.process(&event).is_none());
+
+        let event_crit = Event::DangerousCommand { 
+            raw: "rm -rf /".to_string(), 
+            cwd: PathBuf::new(), 
+            blocked: false 
+        };
+        assert!(engine.process(&event_crit).is_some());
+    }
+
+    #[test]
     fn test_alert_on_high_cpu() {
-        let mut engine = AlertEngine::new(mock_thresholds(10.0, 90.0));
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
         let event = Event::SysHealth { cpu_pct: 15.0, ram_pct: 50.0, disk_pct: 0.0 };
         let result = engine.process(&event);
         assert!(result.is_some());
@@ -132,7 +155,7 @@ mod tests {
 
     #[test]
     fn test_alert_on_build_failure() {
-        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
         let event = Event::BuildFailure { 
             tool: "cargo".to_string(), 
             exit_code: 1, 
@@ -148,7 +171,7 @@ mod tests {
 
     #[test]
     fn test_alert_on_sentinel_event() {
-        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
         let event = Event::Custom {
             watcher: "sentinel".to_string(),
             message: "Sentinel Alert: New connection from 1.2.3.4".to_string(),
@@ -163,7 +186,7 @@ mod tests {
 
     #[test]
     fn test_alert_on_process_crash() {
-        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
         let event = Event::ProcessCrash {
             name: "postgres".to_string(),
             pid: 0,
@@ -179,7 +202,7 @@ mod tests {
 
     #[test]
     fn test_oracle_suggestion() {
-        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0), BuddyMode::Normal);
         let event = Event::BuildFailure {
             tool: "cargo".to_string(),
             exit_code: 101,
