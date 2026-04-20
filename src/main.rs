@@ -13,6 +13,7 @@ use watchers::build::BuildWatcher;
 use watchers::sentinel::SentinelWatcher;
 use watchers::process::ProcessWatcher;
 use watchers::Watcher;
+use telegram::Command;
 use tokio::sync::mpsc;
 
 #[tokio::main]
@@ -81,6 +82,12 @@ async fn main() -> anyhow::Result<()> {
             }
         });
     }
+
+    // Spawn Telegram command listener
+    let bot_clone = bot.bot();
+    tokio::spawn(async move {
+        teloxide::repl(bot_clone, TelegramBot::handle_command).await;
+    });
 
     // Event loop with graceful shutdown
     loop {
