@@ -35,7 +35,7 @@ Sensitive credentials stay in your `.env` file, and manual interventions require
 ### 2. Installation
 Clone the repo and build:
 ```bash
-git clone https://github.com/Arunavo/autobuddy.git
+git clone https://github.com/SrivarsanK/autobuddy.git
 cd autobuddy
 cargo build --release
 ```
