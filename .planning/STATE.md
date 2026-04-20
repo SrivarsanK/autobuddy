@@ -1,14 +1,14 @@
 # State
 
 ## Active Context
-- **Milestone 2:** Contextual Intelligence
-- **Status:** Milestone 2 Complete.
-- **Current Phase:** Finalizing.
+- **Milestone 3:** Remote Governance
+- **Status:** Requirements & Roadmap complete.
+- **Current Phase:** None (Ready for Phase 7).
 
 ## Decisions Logged
-- [x] SSH Watcher (Sentinel) implementation.
-- [x] Process Watcher (Bodyguard) implementation.
-- [x] Smart Diagnosis (Oracle) implementation.
+- [x] Use PIN verification for remote command execution.
+- [x] Personality modes will strictly control alert frequency.
+- [x] Status report will prioritize Uptime and Active Bodyguards.
 
 ## Pending Todos
-- [ ] Complete Milestone 2 and archive.
+- [ ] Start Phase 7: The Controller
