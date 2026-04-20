@@ -18,7 +18,7 @@ use sd_notify::NotifyState;
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     #[cfg(target_os = "linux")]
-    systemd_journal_logger::JournalLog::new()?.install()?;
+    systemd_journal_logger::init()?;
     
     #[cfg(not(target_os = "linux"))]
     simple_logger::init_with_level(log::Level::Info).ok();
