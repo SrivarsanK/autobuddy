@@ -36,8 +36,9 @@ async fn main() -> anyhow::Result<()> {
     // Spawn Terminal watcher
     if config.watchers.terminal {
         let tx_clone = tx.clone();
+        let rules = config.rules.clone();
         tokio::spawn(async move {
-            let watcher = TerminalWatcher;
+            let watcher = TerminalWatcher { rules };
             if let Err(e) = watcher.run(tx_clone).await {
                 eprintln!("TerminalWatcher failed: {}", e);
             }
