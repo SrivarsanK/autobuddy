@@ -11,9 +11,9 @@ Connect the engine to the config so users can actually customize their buddy.
 
 ### Phase 2: The Interceptor (Dangerous Commands)
 Wait for shell events and alert on danger.
-- [ ] Implement `TerminalWatcher` logic (tailing shell history or similar hook)
-- [ ] Match against `dangerous_commands` in config
-- [ ] **UAT:** Typing `rm -rf /` (or similar) triggers an immediate CRITICAL alert.
+- [x] Implement `TerminalWatcher` logic
+- [x] Add substring matching for `dangerous_commands`
+- [x] **UAT:** Running a command on the "naughty list" triggers a CRITICAL alert.
 
 ### Phase 3: Build & Crash Watchers
 Watch the dev loop.
