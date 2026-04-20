@@ -2,13 +2,12 @@
 
 ## Active Context
 - **Milestone 3:** Remote Governance
-- **Status:** Requirements & Roadmap complete.
-- **Current Phase:** None (Ready for Phase 7).
+- **Status:** Phase 7 Complete.
+- **Current Phase:** None (Ready for Phase 8: The Tactician).
 
 ## Decisions Logged
-- [x] Use PIN verification for remote command execution.
-- [x] Personality modes will strictly control alert frequency.
-- [x] Status report will prioritize Uptime and Active Bodyguards.
+- [x] PIN verification structure added to configuration.
+- [x] Status command prioritizes Uptime and RAM usage.
 
 ## Pending Todos
-- [ ] Start Phase 7: The Controller
+- [ ] Start Phase 8: The Tactician

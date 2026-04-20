@@ -8,9 +8,9 @@ The goal is to move from "Alert only" to "Interact" via Telegram.
 
 ### Phase 7: The Controller (Remote Commands)
 Allow basic machine commands via Telegram.
-- [ ] Implement command verification PIN/Auth
-- [ ] Add `/status` command to get real-time health
-- [ ] **UAT:** Sending `/cpu` to the bot returns current system usage.
+- [x] Implement command verification PIN/Auth
+- [x] Add `/status` command to get real-time health
+- [x] **UAT:** Sending `/cpu` to the bot returns current system usage.
 
 ### Phase 8: The Tactician (Personality)
 Implement behavioral filters.
