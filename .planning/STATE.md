@@ -2,11 +2,12 @@
 
 ## Active Context
 - **Milestone 1:** Core Robustness & Viral Features
-- **Status:** Initialized.
-- **Current Phase:** None (Ready to start Phase 1).
+- **Status:** Phase 1 Complete.
+- **Current Phase:** Phase 2: The Interceptor (Dangerous Commands)
 
 ## Decisions Logged
-- (See PROJECT.md)
+- [x] Use configurable thresholds in AlertEngine.
+- [x] Implemented graceful shutdown with lifecycle logging.
 
 ## Pending Todos
-- [ ] Start Phase 1: Robust Thresholds & Rules
+- [ ] Start Phase 2: The Interceptor

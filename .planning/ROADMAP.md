@@ -5,9 +5,9 @@ The goal is to polish the existing features and add the "viral" intercepts that 
 
 ### Phase 1: Robust Thresholds & Rules
 Connect the engine to the config so users can actually customize their buddy.
-- [ ] Fix `AlertEngine` to use `Config` thresholds
-- [ ] Log daemon startup/shutdown events
-- [ ] **UAT:** High CPU (simulated) triggers Telegram alert based on `autobuddy.toml` value.
+- [x] Fix `AlertEngine` to use `Config` thresholds
+- [x] Log daemon startup/shutdown events
+- [x] **UAT:** High CPU (simulated) triggers Telegram alert based on `autobuddy.toml` value.
 
 ### Phase 2: The Interceptor (Dangerous Commands)
 Wait for shell events and alert on danger.
