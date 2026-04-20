@@ -2,12 +2,13 @@
 
 ## Active Context
 - **Milestone 3:** Remote Governance
-- **Status:** Phase 7 Complete.
-- **Current Phase:** None (Ready for Phase 8: The Tactician).
+- **Status:** Milestone 3 Complete.
+- **Current Phase:** None (Ready for Milestone 4).
 
 ## Decisions Logged
 - [x] PIN verification structure added to configuration.
 - [x] Status command prioritizes Uptime and RAM usage.
+- [x] Implemented `PartialOrd` for `Severity` to allow numerical comparison logic (`severity >= threshold`).
 
 ## Pending Todos
-- [ ] Start Phase 8: The Tactician
+- [ ] Plan Milestone 4 (The Keeper)
