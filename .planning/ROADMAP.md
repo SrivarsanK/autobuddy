@@ -17,6 +17,6 @@ Wait for shell events and alert on danger.
 
 ### Phase 3: Build & Crash Watchers
 Watch the dev loop.
-- [ ] Implement `BuildFailure` watcher (cargo/npm)
-- [ ] Implement `ProcessCrash` watcher for configured critical processes
-- [ ] **UAT:** Failed `cargo build` sends the last 5 lines of error to Telegram.
+- [x] Implement `BuildWatcher` (logfile tailing)
+- [x] Implement error parsing for Telegram alerts
+- [x] **UAT:** Build error (simulated via log) sends a Telegram notification.

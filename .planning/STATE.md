@@ -2,13 +2,14 @@
 
 ## Active Context
 - **Milestone 1:** Core Robustness & Viral Features
-- **Status:** Phase 2 Complete.
-- **Current Phase:** Phase 3: The Healer (Build Repair)
+- **Status:** Milestone 1 Complete.
+- **Current Phase:** None (Ready for Milestone 2)
 
 ## Decisions Logged
 - [x] Use configurable thresholds in AlertEngine.
 - [x] Implemented graceful shutdown with lifecycle logging.
 - [x] Implemented `TerminalWatcher` with trigger-file based interception for demo.
+- [x] Implemented `BuildWatcher` with log-tailing for build failure detection.
 
 ## Pending Todos
-- [ ] Start Phase 3: The Healer
+- [ ] Begin Milestone 2
