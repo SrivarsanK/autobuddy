@@ -1,0 +1,20 @@
+[telegram]
+bot_token = "8640010611:AAEqCxZ3C9bHMQXMCz5MIuFeXqqtLrW1hew"
+chat_id = 1251627893
+
+[thresholds]
+cpu_pct = 85.0
+ram_pct = 90.0
+disk_pct = 80.0
+alert_cooldown_secs = 300
+
+[watchers]
+syshealth = true
+process = true
+terminal = true
+build = true
+sentinel = true
+
+[rules]
+dangerous_commands = ["rm -rf", "dd if=", "mkfs", ":(){:|:&};:"]
+block_on_match = true

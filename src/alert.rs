@@ -44,6 +44,9 @@ impl AlertEngine {
             Event::BuildFailure { tool, log_tail, .. } => {
                 ("build_failure".to_string(), format!("Build failed ({}): {}", tool, log_tail), Severity::Critical)
             }
+            Event::Custom { watcher, message, severity } => {
+                (watcher.clone(), message.clone(), severity.clone())
+            }
             _ => return None,
         };
 
@@ -118,5 +121,20 @@ mod tests {
         assert!(msg.contains("Build failed (cargo)"));
         assert!(msg.contains("cannot find value `x`"));
         assert_eq!(sev, Severity::Critical);
+    }
+
+    #[test]
+    fn test_alert_on_sentinel_event() {
+        let mut engine = AlertEngine::new(mock_thresholds(80.0, 90.0));
+        let event = Event::Custom {
+            watcher: "sentinel".to_string(),
+            message: "Sentinel Alert: New connection from 1.2.3.4".to_string(),
+            severity: Severity::Info,
+        };
+        let result = engine.process(&event);
+        assert!(result.is_some());
+        let (msg, sev) = result.unwrap();
+        assert!(msg.contains("Sentinel Alert"));
+        assert_eq!(sev, Severity::Info);
     }
 }
