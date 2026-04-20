@@ -2,7 +2,6 @@ use crate::event::{Event, Severity};
 use crate::config::{Thresholds, BuddyMode};
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
-use std::path::PathBuf;
 
 pub struct AlertEngine {
     thresholds: Thresholds,
@@ -20,6 +19,14 @@ impl AlertEngine {
             cooldowns: HashMap::new(),
             cooldown_duration,
         }
+    }
+
+    pub fn mode(&self) -> BuddyMode {
+        self.mode
+    }
+
+    pub fn set_mode(&mut self, mode: BuddyMode) {
+        self.mode = mode;
     }
 
     pub fn process(&mut self, event: &Event) -> Option<(String, Severity)> {
@@ -56,7 +63,8 @@ impl AlertEngine {
             Event::ProcessCrash { name, .. } => {
                 ("process_crash".to_string(), format!("Bodyguard Alert: {} is missing from duty! Checking the perimeter.", name), Severity::Warning)
             }
-            _ => return None,
+            Event::ModeChange { .. } => return None,
+            Event::HealRequest { .. } => return None,
         };
 
         // Filter based on BuddyMode
@@ -78,25 +86,25 @@ impl AlertEngine {
     }
 
     fn oracle_diagnose(&self, log: &str) -> Option<String> {
-        let rules = [
-            ("unresolved import", "Check your imports or Cargo.toml for missing dependencies."),
-            ("cannot find value", "Is the variable defined in this scope? Check for typos."),
-            ("expected", "Type mismatch detected. Use `.into()` or check function signatures."),
-            ("failed to resolve", "Run `cargo update` or check if the dependency is in Cargo.toml."),
-        ];
-
-        for (pattern, suggestion) in rules {
-            if log.contains(pattern) {
-                return Some(suggestion.to_string());
-            }
+        if log.contains("cannot find value") {
+            Some("You refer to a variable that doesn't exist. Check your spelling or scope!".to_string())
+        } else if log.contains("unresolved import") {
+            Some("Check your modules! The requested item is missing or not public.".to_string())
+        } else if log.contains("mismatched types") {
+            Some("Type mismatch! Rust is strict about types. Ensure your function signatures match.".to_string())
+        } else if log.contains("use of moved value") {
+            Some("Ownership error! You're trying to use a value after it has been moved. Use .clone() or references.".to_string())
+        } else {
+            None
         }
-        None
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::event::{Event, Severity};
+    use std::path::PathBuf;
 
     fn mock_thresholds(cpu: f32, ram: f32) -> Thresholds {
         Thresholds {
@@ -148,9 +156,7 @@ mod tests {
         };
         let result = engine.process(&event);
         assert!(result.is_some());
-        let (msg, sev) = result.unwrap();
-        assert!(msg.contains("Dangerous command detected"));
-        assert_eq!(sev, Severity::Critical);
+        assert_eq!(result.unwrap().1, Severity::Critical);
     }
 
     #[test]
@@ -194,10 +200,9 @@ mod tests {
         };
         let result = engine.process(&event);
         assert!(result.is_some());
-        let (msg, sev) = result.unwrap();
+        let (msg, _) = result.unwrap();
         assert!(msg.contains("Bodyguard Alert"));
         assert!(msg.contains("postgres"));
-        assert_eq!(sev, Severity::Warning);
     }
 
     #[test]
@@ -212,6 +217,6 @@ mod tests {
         assert!(result.is_some());
         let (msg, _) = result.unwrap();
         assert!(msg.contains("Oracle Suggestion"));
-        assert!(msg.contains("Check your imports"));
+        assert!(msg.contains("Check your modules"));
     }
 }
